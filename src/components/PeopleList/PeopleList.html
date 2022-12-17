@@ -1,0 +1,8 @@
+<div class="column column--ai-center column--gap-16">
+  <PeopleCard v-for="person in people" :person="person"></PeopleCard>
+
+  <div class="row">
+    <button :disabled="!previous || isLoading" @click="loadPrevious()">Previous</button>
+    <button :disabled="!next || isLoading" @click="loadNext()">Next</button>
+  </div>
+</div>
