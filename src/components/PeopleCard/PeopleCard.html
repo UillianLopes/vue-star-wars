@@ -1,8 +1,19 @@
 <div class="people-card">
-  <h3>{{ person.name }}</h3>
-  <router-link :to="'/people/' + person.id">
-    <button>
-      <a>View Details</a>
-    </button>
-  </router-link>
+  
+  <span class="people-card__title">{{ person.name }}</span>
+  <p>
+    <strong>Hair color: </strong> {{ person.hair_color }}
+    <br />
+    <strong>Eye color: </strong> {{ person.eye_color }}
+    <br />
+    <strong>Skin color: </strong> {{ person.skin_color }}
+    <br />
+  </p>
+  <div class="row">
+    <router-link :to="'/people/' + person.id">
+      <CustomButton>
+        <a>View Details</a>
+      </CustomButton>
+    </router-link>
+  </div>
 </div>

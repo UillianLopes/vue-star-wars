@@ -1,8 +1,17 @@
-<div class="column column--ai-center column--gap-16">
-  <PeopleCard v-for="person in people" :person="person"></PeopleCard>
-
-  <div class="row">
-    <button :disabled="!previous || isLoading" @click="loadPrevious()">Previous</button>
-    <button :disabled="!next || isLoading" @click="loadNext()">Next</button>
+<div class="column column--ai-center pd--16">
+  <div class="people__grid">
+    <PeopleCard v-for="person in people" :person="person"></PeopleCard>
   </div>
+</div>
+
+<div class="row row--jc-center row--gap-16">
+  <CustomButton
+    :isDisabled="!canGoPrevious || isLoading"
+    @onClick="loadPrevious()"
+  >
+    Previous
+  </CustomButton>
+  <CustomButton :isDisabled="!canGoNext || isLoading" @onClick="loadNext()">
+    Next
+  </CustomButton>
 </div>

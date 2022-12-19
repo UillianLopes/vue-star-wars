@@ -12,3 +12,10 @@ li {
 a {
   color: #42b983;
 }
+
+.people__grid {
+  display: grid;
+  grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr) minmax(0px, 1fr);
+  gap: 16px;
+  min-width: 1280px;
+}

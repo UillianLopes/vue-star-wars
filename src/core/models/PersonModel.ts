@@ -1,6 +1,6 @@
-import { Functions } from "./functions/functions";
+import { Functions } from "@/core/functions";
 
-export class Person {
+export class PersonModel {
   name: string | null = null;
   height: string | null = null;
   mass: string | null = null;
@@ -19,14 +19,16 @@ export class Person {
   url: string | null = null;
   id: string | null = null;
 
-  constructor(data: Partial<Person>) {
+  constructor(data: Partial<PersonModel>) {
     if (data) {
       Object.assign(this, data);
     }
   }
 
-  static fromJson(json: any): Person {
-    json["id"] = Functions.extractIdFromUrl(json.url);
-    return new Person(json);
+  static fromJson(json: { [key: string]: unknown }): PersonModel {
+    if (typeof json.url === "string") {
+      json["id"] = Functions.extractIdFromUrl(json.url);
+    }
+    return new PersonModel(json);
   }
 }

@@ -2,47 +2,52 @@
 <template src="./PeopleList.html"></template>
 
 <script lang="ts">
-import { Person } from "@/core/person.model";
+import { PersonModel } from "@/core/models";
 import { Options, Vue } from "vue-class-component";
+import { peopleService } from "@/core/services/PeopleService";
 import PeopleCard from "../PeopleCard/PeopleCard.vue";
-import { ListResponseModel } from "@/core/response.model";
-import { axiosService } from "@/core/services/AxiosService";
+import CustomButton from "../CustomButton/CustomButton.vue";
 
 @Options({
   components: {
     PeopleCard,
+    CustomButton,
   },
 })
 export default class PeopleList extends Vue {
-  people: Person[] = [];
+  people: PersonModel[] = [];
 
   isLoading = false;
-  next: string | null = "https://swapi.dev/api/people/";
-  previous: string | null = null;
-  axiosService = axiosService;
+  page: number | null = 1;
+  canGoNext = false;
+  canGoPrevious = false;
 
   override created(): void {
-    this.loadNext();
+    this.load(this.page);
   }
 
   loadNext() {
-    this.load(this.next);
+    if (this.page && this.canGoNext) {
+      this.load(++this.page);
+    }
   }
 
   loadPrevious() {
-    this.load(this.previous);
+    if (this.page && this.canGoPrevious) {
+      this.load(--this.page);
+    }
   }
 
-  load(url: string | null) {
-    if (!url) return;
+  load(page: number | null) {
+    if (!page) return;
     this.isLoading = true;
-    axiosService
-      .get<ListResponseModel<Partial<Person>>>(url)
-      .then((response) => {
-        const { next, previous, results } = response.data;
-        this.people = results.map((person) => Person.fromJson(person));
-        this.next = next;
-        this.previous = previous;
+
+    peopleService
+      .getAll({ page })
+      .then(({ next, previous, results }) => {
+        this.people = results.map((person) => PersonModel.fromJson(person));
+        this.canGoNext = !!next;
+        this.canGoPrevious = !!previous;
       })
       .finally(() => (this.isLoading = false));
   }
